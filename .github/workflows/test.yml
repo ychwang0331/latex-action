@@ -7,44 +7,20 @@ on:
     
 jobs:
   test:
+build_latex:
     runs-on: ubuntu-latest
     steps:
       - name: Set up Git repository
-        uses: actions/checkout@v1
-      - name: Compile basic LaTeX document
-        uses: ./
+        uses: actions/checkout@v2
+        
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v2
         with:
-          root_file: test.tex
-          working_directory: test/
-      - name: Compile basic LaTeX document with lualatex
-        uses: ./
-        with:
-          root_file: test.tex
-          working_directory: test/
-          compiler: lualatex
-          args: -file-line-error -interaction=nonstopmode
-      - name: Compile LaTeX document with math symbols
-        uses: ./
-        with:
-          root_file: math.tex
-          working_directory: test/
-      - name: Compile LaTeX document with biblatex/biber
-        uses: ./
-        with:
-          root_file: biblatex.tex
-          working_directory: test/
-          extra_packages: biblatex-ieee
-      - name: Compile LaTeX document with minted
-        uses: ./
-        with:
-          root_file: minted.tex
-          working_directory: test/
-          extra_system_packages: python3-pygments
-          args: "-pdf -latexoption=-shell-escape -latexoption=-file-line-error -latexoption=-interaction=nonstopmode"
-      - name: Check pdf files
-        run: |
-          set -e
-          file test/test.pdf | grep -q ' PDF '
-          file test/math.pdf | grep -q ' PDF '
-          file test/biblatex.pdf | grep -q ' PDF '
-          file test/minted.pdf | grep -q ' PDF '
+          root_file: file1.tex
+      - name: Commit and Push new file
+         run: |
+              git config user.name <ychwang0331>
+              git config user.email <ychwang0331@gmail.com>           
+              git add .           
+              git commit -m "add PDF file"           
+              git push      
